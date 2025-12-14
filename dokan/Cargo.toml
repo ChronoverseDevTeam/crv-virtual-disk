@@ -21,12 +21,33 @@ dokan-sys = { path = "../dokan-sys" }
 widestring = "1.2"
 winapi = { version = "0.3", features = ["std", "errhandlingapi", "handleapi", "heapapi", "ioapiset", "minwinbase", "minwindef", "ntdef", "ntstatus", "processenv", "processthreadsapi", "sddl", "securitybaseapi", "synchapi", "winbase", "winerror", "winnt"] }
 
+# Optional dependencies for examples
+reqwest = { version = "0.12", features = ["blocking", "json"], optional = true }
+serde = { version = "1.0", features = ["derive"], optional = true }
+serde_json = { version = "1.0", optional = true }
+tokio = { version = "1.41", features = ["full"], optional = true }
+axum = { version = "0.7", optional = true }
+
 [dev-dependencies]
 clap = "4.5"
 ctrlc = "3.4"
 lazy_static = "1.5"
 parking_lot = "0.12"
 regex = "1.11"
+# Also add these for examples to use
+reqwest = { version = "0.12", features = ["blocking", "json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.41", features = ["full"] }
+axum = "0.7"
+
+[features]
+httpfs = ["dep:reqwest", "dep:serde", "dep:serde_json", "dep:tokio", "dep:axum"]
+
+[[bin]]
+name = "httpfs-server"
+path = "examples/httpfs/server.rs"
+required-features = ["httpfs"]
 
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
